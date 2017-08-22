@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.management import BaseCommand
 from parser.XmlFeed import XmlFeed
 from core.models import *
@@ -19,8 +20,8 @@ class Command(BaseCommand):
         parser = XmlFeed(source)
         parser.parse()
 
-        # self.load_events(parser.get_events())
-        # self.load_places(parser.get_places())
+        self.load_events(parser.get_events())
+        self.load_places(parser.get_places())
         self.load_schedule(parser.get_schedule())
 
     def load_events(self, events):
@@ -81,7 +82,7 @@ class Command(BaseCommand):
             try:
                 event = Event.objects.get(eid=session.get('event'))
                 place = Place.objects.get(pid=session.get('place'))
-            except:
+            except ObjectDoesNotExist:
                 continue
 
             Schedule.objects.create(date=session.get('date'),

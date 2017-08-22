@@ -92,7 +92,7 @@ class Place(models.Model):
 
 
 class Schedule(models.Model):
-    date = models.DateTimeField()
+    date = models.DateField()
 
     event = models.ForeignKey(Event)
     place = models.ForeignKey(Place)

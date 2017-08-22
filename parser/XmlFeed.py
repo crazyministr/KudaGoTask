@@ -1,8 +1,4 @@
-try:
-    from parser.XmlParserBase import XmlParserBase
-except ImportError:
-    from XmlParserBase import XmlParserBase
-
+from parser.XmlParserBase import XmlParserBase
 import xml.etree.ElementTree as ET
 
 
@@ -42,8 +38,8 @@ class XmlFeed(XmlParserBase):
                 'title': self.convert_to_str(place.find('title')),
                 'city': self.convert_to_str(place.find('city')),
                 'address': self.convert_to_str(place.find('address')),
-                # 'latitude': self.convert_to_float(place.find('coordinates').attrib['latitude']),
-                # 'longitude': self.convert_to_float(place.find('coordinates').attrib['longitude']),
+                'latitude': None,
+                'longitude': None,
                 'phones': self.convert_to_list(place.find('phones')),
                 'metros': self.convert_to_list(place.find('metros')),
                 'url': self.convert_to_str(place.find('url')),
@@ -54,8 +50,10 @@ class XmlFeed(XmlParserBase):
             })
             coordinates = place.find('coordinates')
             if coordinates:
-                self._places[-1]['latitude'] = self.convert_to_float(coordinates.attrib['latitude'])
-                self._places[-1]['longitude'] = self.convert_to_float(coordinates.attrib['longitude'])
+                self._places[-1]['latitude'] = self.convert_to_float(
+                    coordinates.attrib['latitude'])
+                self._places[-1]['longitude'] = self.convert_to_float(
+                    coordinates.attrib['longitude'])
 
     def parse_schedule(self, schedule):
         for session in schedule:
@@ -66,23 +64,3 @@ class XmlFeed(XmlParserBase):
                 'time': self.convert_to_str(session.attrib.get('time', None)),
                 'timetill': self.convert_to_str(session.attrib.get('timetill', None)),
             })
-
-
-if __name__ == '__main__':
-    parser = XmlFeed('/home/anton/Projects/KudaGoTask/feed/test.xml')
-    parser.parse()
-    e = parser.get_events()
-    p = parser.get_places()
-    s = parser.get_schedule()
-    print('Events =', len(e))
-    print('Places =', len(p))
-    print('Sessions =', len(s))
-
-    for ee in e:
-        print(ee['u_id'], end=' ')
-
-    print()
-    for pp in p:
-        print(pp['u_id'], end='\n\n')
-    # for ss in s:
-    #     print(ss, end='\n\n')
