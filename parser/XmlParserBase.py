@@ -85,7 +85,7 @@ class XmlParserBase(object):
 
         res = []
         for tag in data:
-            res.append(tag.attrib[attr] if attr else tag.text)
+            res.append(tag.attrib.get(attr, None) if attr else tag.text)
 
         return res
 
