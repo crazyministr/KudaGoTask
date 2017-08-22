@@ -19,7 +19,7 @@ class XmlFeed(XmlParserBase):
     def parse_events(self, events):
         for event in events:
             self._events.append({
-                'uid': self.convert_to_int(event.attrib.get('id', None)),
+                'eid': self.convert_to_int(event.attrib.get('id', None)),
                 'etype': self.convert_to_str(event.attrib.get('type', None)),
                 'price': self.convert_to_bool(event.attrib.get('price', None)),
                 'kids': self.convert_to_bool(event.attrib.get('kids', None)),
@@ -37,7 +37,7 @@ class XmlFeed(XmlParserBase):
     def parse_places(self, places):
         for place in places:
             self._places.append({
-                'uid': self.convert_to_int(place.attrib.get('id', None)),
+                'pid': self.convert_to_int(place.attrib.get('id', None)),
                 'ptype': self.convert_to_str(place.attrib.get('type', None)),
                 'title': self.convert_to_str(place.find('title')),
                 'city': self.convert_to_str(place.find('city')),
@@ -79,10 +79,10 @@ if __name__ == '__main__':
     print('Sessions =', len(s))
 
     for ee in e:
-        print(ee['uid'], end=' ')
+        print(ee['u_id'], end=' ')
 
     print()
     for pp in p:
-        print(pp['uid'], end='\n\n')
+        print(pp['u_id'], end='\n\n')
     # for ss in s:
     #     print(ss, end='\n\n')
