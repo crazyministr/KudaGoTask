@@ -75,7 +75,7 @@ class XmlParserBase(object):
     def convert_to_date(x):
         try:
             return datetime.strptime(x, '%Y-%m-%d')
-        except ValueError:
+        except (ValueError, TypeError):
             return None
 
     @staticmethod

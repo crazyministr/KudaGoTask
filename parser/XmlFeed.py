@@ -20,7 +20,7 @@ class XmlFeed(XmlParserBase):
         for event in events:
             self._events.append({
                 'uid': self.convert_to_int(event.attrib.get('id', None)),
-                'type': self.convert_to_str(event.attrib.get('type', None)),
+                'etype': self.convert_to_str(event.attrib.get('type', None)),
                 'price': self.convert_to_bool(event.attrib.get('price', None)),
                 'kids': self.convert_to_bool(event.attrib.get('kids', None)),
                 'title': self.convert_to_str(event.find('title')),
@@ -38,7 +38,7 @@ class XmlFeed(XmlParserBase):
         for place in places:
             self._places.append({
                 'uid': self.convert_to_int(place.attrib.get('id', None)),
-                'type': self.convert_to_str(place.attrib.get('type', None)),
+                'ptype': self.convert_to_str(place.attrib.get('type', None)),
                 'title': self.convert_to_str(place.find('title')),
                 'city': self.convert_to_str(place.find('city')),
                 'address': self.convert_to_str(place.find('address')),
@@ -60,12 +60,11 @@ class XmlFeed(XmlParserBase):
     def parse_schedule(self, schedule):
         for session in schedule:
             self._schedule.append({
-                'date': self.convert_to_date(session.attrib['date']),
-                'event': self.convert_to_int(session.attrib['event']),
-                'place': self.convert_to_int(session.attrib['place']),
-                'time': self.convert_to_str(session.attrib['time']),
-                'timetill': self.convert_to_str(session.attrib['timetill'])
-                    if session.attrib.get('timetill', None) else None,
+                'date': self.convert_to_date(session.attrib.get('date', None)),
+                'event': self.convert_to_int(session.attrib.get('event', None)),
+                'place': self.convert_to_int(session.attrib.get('place', None)),
+                'time': self.convert_to_str(session.attrib.get('time', None)),
+                'timetill': self.convert_to_str(session.attrib.get('timetill', None)),
             })
 
 
@@ -75,9 +74,15 @@ if __name__ == '__main__':
     e = parser.get_events()
     p = parser.get_places()
     s = parser.get_schedule()
+    print('Events =', len(e))
+    print('Places =', len(p))
+    print('Sessions =', len(s))
+
     for ee in e:
-        print(ee, end='\n\n')
+        print(ee['uid'], end=' ')
+
+    print()
     for pp in p:
-        print(pp, end='\n\n')
-    for ss in s:
-        print(ss, end='\n\n')
+        print(pp['uid'], end='\n\n')
+    # for ss in s:
+    #     print(ss, end='\n\n')
